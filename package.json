@@ -1,7 +1,7 @@
 {
-  "name": "microservice",
+  "name": "soul-king-streams",
   "version": "1.0.0",
-  "description": "",
+  "description": "A streamlined Node.js microservice skeleton for efficient inter-service communication via Kafka and monitoring endpoint exposure with Express.js. Features include Kafka integration for messaging, an Express.js API for monitoring, modular structure for easy maintenance, and Jest setup for unit testing. Ideal for quickly setting up Node.js microservices with Kafka communication and monitoring capabilities.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
