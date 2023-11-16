@@ -16,7 +16,7 @@ jobs:
         node-version: '18'
         registry-url: 'https://registry.npmjs.org'
     - name: Install Dependencies
-      run: npm install
+      run: npm ci
     - name: Run Tests
       run: npm test
     - name: Check if version in package.json was increased
