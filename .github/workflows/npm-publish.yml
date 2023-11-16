@@ -19,7 +19,17 @@ jobs:
       run: npm install
     - name: Run Tests
       run: npm test
+    - name: Check if version in package.json was increased
+      id: check_version
+      run: |
+        CURRENT_VERSION=$(node -p "require('./package.json').version")
+        NPM_VERSION=$(npm view $(node -p "require('./package.json').name") version)
+        if [ "$CURRENT_VERSION" == "$NPM_VERSION" ]; then
+          echo "Version in package.json ($CURRENT_VERSION) is not higher than published version ($NPM_VERSION)"
+          exit 1
+        fi
     - name: Publish to NPM
+      if: steps.check_version.outcome == 'success'
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
