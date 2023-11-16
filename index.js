@@ -1,5 +1,9 @@
-const app = require('#api/app');
+const BaseEmitter = require('./src/emitters/base.emitter');
+const BaseListener = require('./src/listeners/base.listener');
+const app = require('./src/api/app');
 
-app.listen(3223, () => {
-  console.log('App running');
-});
+module.exports = {
+  BaseEmitter,
+  BaseListener,
+  app,
+};
