@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:form": "eslint --fix",
-    "test:final": "",
-    "test:copy": "./dev-utils/run-eslint.sh"
+    "test:final": ""
   },
   "keywords": [],
   "author": "",
