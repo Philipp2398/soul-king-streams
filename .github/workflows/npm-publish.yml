@@ -2,8 +2,8 @@ name: Publish to NPM
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   build-and-publish:
@@ -16,7 +16,7 @@ jobs:
         node-version: '18'
         registry-url: 'https://registry.npmjs.org'
     - name: Install Dependencies
-      run: npm install
+      run: npm ci
     - name: Run Tests
       run: npm test
     - name: Check if version in package.json was increased
@@ -25,11 +25,16 @@ jobs:
         CURRENT_VERSION=$(node -p "require('./package.json').version")
         NPM_VERSION=$(npm view $(node -p "require('./package.json').name") version)
         if [ "$CURRENT_VERSION" == "$NPM_VERSION" ]; then
+          echo "::set-output name=publish_required::false"
           echo "Version in package.json ($CURRENT_VERSION) is not higher than published version ($NPM_VERSION)"
-          exit 1
+        else
+          echo "::set-output name=publish_required::true"
         fi
     - name: Publish to NPM
-      if: steps.check_version.outcome == 'success'
+      if: steps.check_version.outputs.publish_required == 'true'
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+    - name: Skip Publish to NPM
+      if: steps.check_version.outputs.publish_required != 'true'
+      run: echo "Not published to npm since no new version"

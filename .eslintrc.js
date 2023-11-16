@@ -23,5 +23,5 @@ module.exports = {
   },
   'rules': {
   },
-  'ignorePatterns': ['*.config.js', '.*']
+  'ignorePatterns': ['*.config.js', '.*', 'test/*']
 };
