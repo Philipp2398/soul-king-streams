@@ -10,15 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: Set package.json version to Git Tag
+      run: |
+        GIT_TAG=$(git describe --tags)
+        echo "Latest Git tag: $GIT_TAG"
+        jq ".version=\"$GIT_TAG\"" package.json > temp.json && mv temp.json package.json
+
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '18'
         registry-url: 'https://registry.npmjs.org'
+
     - name: Install Dependencies
       run: npm ci
+
     - name: Run Tests
       run: npm test
+
     - name: Check if version in package.json was increased
       id: check_version
       run: |
@@ -30,11 +40,13 @@ jobs:
         else
           echo "::set-output name=publish_required::true"
         fi
+
     - name: Publish to NPM
       if: steps.check_version.outputs.publish_required == 'true'
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
     - name: Skip Publish to NPM
       if: steps.check_version.outputs.publish_required != 'true'
       run: echo "Not published to npm since no new version"
