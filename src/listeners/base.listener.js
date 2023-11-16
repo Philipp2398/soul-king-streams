@@ -1,7 +1,7 @@
 const KafkaSingleton = require('#lib/kafka/kafkaSingleton');
 const {
   totalMessagesConsumedCounter, errorMessagesConsumedCounter,
-} = require('#lib/metrics/metrics.js');
+} = require('#lib/metrics/metrics');
 /**
  * Base class for Kafka topic listeners.
  */

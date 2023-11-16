@@ -1,7 +1,7 @@
 const KafkaSingleton = require('#lib/kafka/kafkaSingleton');
 const {
   totalMessagesEmittedCounter, errorMessageEmittedCounter,
-} = require('#lib/metrics/metrics.js');
+} = require('#lib/metrics/metrics');
 
 /**
  * Base class for Kafka message emitters.
