@@ -20,8 +20,12 @@ class BaseListener {
   constructor({
     groupId, topics, clientId, kafkaBrokers, kafkaClient, fromBeginning = false,
   }) {
-    if (!groupId || !topics || topics.length === 0) {
-      throw new Error('groupId and topics are required for BaseListener');
+    if (!topics || topics.length === 0) {
+      throw new Error('topics are required for BaseListener');
+    }
+
+    if (!groupId) {
+      throw new Error('groupId is required for BaseListener');
     }
 
     this.groupId = groupId;
