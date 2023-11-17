@@ -105,7 +105,13 @@ process.on('SIGINT', async () => {
 The `app` component configures Express.js for the monitoring endpoints.
 
 ```javascript
-// Code to configure and use the Express.js application
+const { app } = require('soul-king-streams');
+
+const PORT = 3000
+
+app.listen(PORT, () => {
+	console.log(`Server running on ${ PORT }`);
+})
 ```
 
 ## Configuration
