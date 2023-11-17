@@ -18,14 +18,14 @@ class BaseListener {
    * Start consuming from the beginning
    */
   constructor({
-    groupId, topic, clientId, kafkaBrokers, kafkaClient, fromBeginning = false,
+    groupId, topics, clientId, kafkaBrokers, kafkaClient, fromBeginning = false,
   }) {
-    if (!groupId || !topic) {
-      throw new Error('groupId and topic are required for BaseListener');
+    if (!groupId || !topics || topics.length === 0) {
+      throw new Error('groupId and topics are required for BaseListener');
     }
 
     this.groupId = groupId;
-    this.topic = topic;
+    this.topics = topics;
     this.fromBeginning = fromBeginning;
 
     // Initialize KafkaSingleton if necessary
@@ -50,31 +50,27 @@ class BaseListener {
   async connect() {
     try {
       await this.consumer.connect();
-      await this.consumer.subscribe({
-        topic: this.topic,
-        fromBeginning: this.fromBeginning,
-      });
+      for (const topic of this.topics) {
+        await this.consumer.subscribe({
+          topic: topic,
+          fromBeginning: this.fromBeginning,
+        });
+      }
 
       await this.consumer.run({
         eachMessage: async ({topic, partition, message}) => {
           try {
             await this.onMessage({topic, partition, message});
-
-            // Increment total messages consumed counter
             totalMessagesConsumedCounter.inc();
           } catch (error) {
-            console.error('Error processing message:', err);
-
-            // Increment error messages consumed counter
+            console.error('Error processing message:', error);
             errorMessagesConsumedCounter.inc();
-
             throw error;
           }
         },
       });
     } catch (error) {
       console.error('Error in Kafka connection:', error);
-      // Consider additional error handling/recovery logic here
     }
   }
 
