@@ -82,7 +82,7 @@ class MyKafkaListener extends BaseListener {
 
 const myListener = new MyKafkaListener({
   groupId: 'my-group',
-  topic: 'my-topic',
+  topic: ['my-topic'. 'my-topic-2'],
   clientId: 'my-client-id',
   kafkaBrokers: ['broker1:9092', 'broker2:9092']
 });
