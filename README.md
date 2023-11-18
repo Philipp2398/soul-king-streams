@@ -25,16 +25,18 @@ Before using `BaseEmitter` and `BaseListener`, you must initialize `KafkaSinglet
 // Initialize the Kafka client
 const clientId = 'my-app-client';
 const brokers = ['broker1:9092', 'broker2:9092'];
+const fromBeginning = true; // Optional parameter to consume messages from the beginning
+const logCreator = customLoggerFunction; // Optional custom logger
+const loggingLevel = 'info'; // Optional logging level
 
-KafkaSingleton.initialize(clientId, brokers);
-
-// Later in your application, when you need to use Kafka
 try {
+  KafkaSingleton.initialize(clientId, brokers, fromBeginning, logCreator, loggingLevel);
   const kafka = KafkaSingleton.getInstance();
   // Use the kafka instance for producing or consuming messages
 } catch (error) {
   console.error(error.message);
 }
+
 ```
 
 ### API Endpoints
